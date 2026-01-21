@@ -26,7 +26,7 @@
             <i class="fas fa-user-circle ms-2"></i> {{ auth()->user()->name ?? 'Admin' }}
           </button>
           <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-            <li>
+            <li> 
               <a class="dropdown-item" href="{{ route('profile.edit') }}">
                 <i class="fas fa-user me-2"></i>الملف الشخصي
               </a>

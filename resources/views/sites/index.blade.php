@@ -202,10 +202,7 @@
             </div>
         @endcan
 
-        <!-- Copyright -->
-        <div class="text-center mt-5 pt-3 text-muted">
-            <p>Copyright © 2025 All rights reserved</p>
-        </div>
+    
 
     </div>
 </div>

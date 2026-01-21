@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\log;
+
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Validation\ValidatesRequests;
@@ -103,6 +105,7 @@ public function __construct()
 
 public function store(Request $request)
 {
+    // dd($request->all());
     $data = $request->validate([
         'username' => ['required','string','max:50','unique:users,username'],
         'name'     => ['required','string','max:255'],
@@ -254,10 +257,10 @@ public function sendWhatsAppUltraMsg($to, $message)
     ]);
 
     if ($response->successful()) {
-        \Log::info('تم إرسال الرسالة بنجاح');
+        Log::info('تم إرسال الرسالة بنجاح');
         return $response->json();
     } else {
-        \Log::error('فشل الإرسال', ['response' => $response->body()]);
+        Log::error('فشل الإرسال', ['response' => $response->body()]);
         return [
             'success' => false,
             'error' => $response->body()

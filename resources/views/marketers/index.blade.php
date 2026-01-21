@@ -20,8 +20,8 @@
             </div>
 
             <!-- البحث -->
-            <div class="d-flex flex-wrap justify-content-between align-items-center mb-4 gap-3 ">
-                <form  class="d-flex gap-2" method="GET" action="{{ route('marketers.index') }}" >
+            <div class="d-flex flex-wrap justify-content-between align-items-center mb-4 gap-3">
+                <form class="d-flex gap-2" method="GET" action="{{ route('marketers.index') }}">
                     <div class="search-box position-relative" style="min-width: 280px;">
                         <input
                             type="text"
@@ -225,10 +225,12 @@
                 const countrySelect = document.getElementById('country-code-select');
                 const flagImg = document.getElementById('selected-flag-img');
 
-                countrySelect.addEventListener('change', function() {
-                    const selected = this.options[this.selectedIndex];
-                    flagImg.src = selected.getAttribute('data-flag-src');
-                });
+                if (countrySelect && flagImg) {
+                    countrySelect.addEventListener('change', function() {
+                        const selected = this.options[this.selectedIndex];
+                        flagImg.src = selected.getAttribute('data-flag-src');
+                    });
+                }
 
                 // التحقق من رقم الهاتف
                 const phoneInput = document.getElementById('geex-input-phone');
@@ -248,6 +250,8 @@
                 };
 
                 function validatePhone() {
+                    if (!phoneInput || !validationMsg) return;
+                    
                     const code = countrySelect.value;
                     const phone = phoneInput.value.trim();
                     if (!phone) {
@@ -260,8 +264,10 @@
                     validationMsg.style.color = isValid ? 'green' : 'red';
                 }
 
-                phoneInput.addEventListener('input', validatePhone);
-                countrySelect.addEventListener('change', validatePhone);
+                if (phoneInput && countrySelect) {
+                    phoneInput.addEventListener('input', validatePhone);
+                    countrySelect.addEventListener('change', validatePhone);
+                }
 
                 // تحميل الفروع
                 const siteSelect = document.getElementById('geex-input-location');
@@ -269,8 +275,8 @@
                 const branchSelect = document.getElementById('geex-input-branch');
 
                 function loadBranches(siteId) {
-                    if (!siteId) {
-                        branchContainer.style.display = 'none';
+                    if (!siteId || !branchContainer || !branchSelect) {
+                        if (branchContainer) branchContainer.style.display = 'none';
                         return;
                     }
 
@@ -291,7 +297,9 @@
                         });
                 }
 
-                siteSelect.addEventListener('change', () => loadBranches(siteSelect.value));
+                if (siteSelect) {
+                    siteSelect.addEventListener('change', () => loadBranches(siteSelect.value));
+                }
             });
         </script>
     @endcan
@@ -406,10 +414,12 @@
                     const countrySelectEdit = document.getElementById(`edit-country-${id}`);
                     const flagImgEdit = document.getElementById(`edit-flag-${id}`);
 
-                    countrySelectEdit.addEventListener('change', function() {
-                        const selected = this.options[this.selectedIndex];
-                        flagImgEdit.src = selected.getAttribute('data-flag-src');
-                    });
+                    if (countrySelectEdit && flagImgEdit) {
+                        countrySelectEdit.addEventListener('change', function() {
+                            const selected = this.options[this.selectedIndex];
+                            flagImgEdit.src = selected.getAttribute('data-flag-src');
+                        });
+                    }
 
                     // التحقق من رقم الهاتف - تعديل
                     const phoneEdit = document.getElementById(`edit-phone-${id}`);
@@ -429,6 +439,8 @@
                     };
 
                     function validateEditPhone() {
+                        if (!phoneEdit || !msgEdit || !countrySelectEdit) return;
+                        
                         const code = countrySelectEdit.value;
                         const phone = phoneEdit.value.trim();
                         if (!phone) {
@@ -440,8 +452,10 @@
                         msgEdit.style.color = isValid ? 'green' : 'red';
                     }
 
-                    phoneEdit.addEventListener('input', validateEditPhone);
-                    countrySelectEdit.addEventListener('change', validateEditPhone);
+                    if (phoneEdit && countrySelectEdit) {
+                        phoneEdit.addEventListener('input', validateEditPhone);
+                        countrySelectEdit.addEventListener('change', validateEditPhone);
+                    }
 
                     // تحميل الفروع - تعديل
                     const siteEdit = document.getElementById(`edit-site-${id}`);
@@ -449,8 +463,8 @@
                     const branchSelectEdit = document.getElementById(`edit-branch-${id}`);
 
                     function loadEditBranches(siteId, selectedBranch = '{{ $marketer->branch_id ?? '' }}') {
-                        if (!siteId) {
-                            branchContEdit.style.display = 'none';
+                        if (!siteId || !branchContEdit || !branchSelectEdit) {
+                            if (branchContEdit) branchContEdit.style.display = 'none';
                             return;
                         }
 
@@ -471,9 +485,13 @@
                     }
 
                     // تحميل أولي إذا كان فيه موقع مختار
-                    if (siteEdit.value) loadEditBranches(siteEdit.value);
+                    if (siteEdit && siteEdit.value) {
+                        loadEditBranches(siteEdit.value);
+                    }
 
-                    siteEdit.addEventListener('change', () => loadEditBranches(siteEdit.value));
+                    if (siteEdit) {
+                        siteEdit.addEventListener('change', () => loadEditBranches(siteEdit.value));
+                    }
                 });
             </script>
         @endcan

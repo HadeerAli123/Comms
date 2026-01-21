@@ -8,6 +8,9 @@ use App\Models\Client;
 use App\Models\Site;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Validation\ValidatesRequests;
@@ -34,6 +37,7 @@ public function __construct()
     public function index(Request $request)
     {
 
+    // dd($request->all());
         $query = Marketer::with([
             'site',
             'employee',
@@ -133,10 +137,12 @@ if ($request->has('subsite_id') && !empty($request->subsite_id)) {
      */
     public function create()
     {
+       
         $sites = Site::whereNull('parent_id')->pluck('name', 'id');
 
         $employees = User::pluck('name', 'id');
         return view('marketers.create', compact('sites', 'employees'));
+
     }
     /**
      * Mark a marketer as having received their commission.
@@ -180,7 +186,7 @@ if ($request->has('subsite_id') && !empty($request->subsite_id)) {
         $marketer->save();
 
         // Log payout in balance table as debit
-        \DB::table('balance')->insert([
+        DB::table('balance')->insert([
             'amount'      => $amount,
             'type'        => 'debit',
             'description' => 'استلام عمولة مسوق: ' . $marketer->name,
@@ -194,6 +200,7 @@ if ($request->has('subsite_id') && !empty($request->subsite_id)) {
 
     public function store(Request $request)
     {
+        // dd($request->all());
         $data = $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'country_code' => ['required', 'string', 'max:6'],
@@ -256,10 +263,10 @@ public function sendWhatsAppUltraMsg($to, $message)
     ]);
 
     if ($response->successful()) {
-        \Log::info('تم إرسال الرسالة بنجاح');
+        Log::info('تم إرسال الرسالة بنجاح');
         return $response->json();
     } else {
-        \Log::error('فشل الإرسال', ['response' => $response->body()]);
+        Log::error('فشل الإرسال', ['response' => $response->body()]);
         return [
             'success' => false,
             'error' => $response->body()

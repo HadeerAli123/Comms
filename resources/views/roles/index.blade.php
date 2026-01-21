@@ -20,11 +20,7 @@
                         <!-- أدوات البحث و التصدير -->
                         <div class="d-flex flex-wrap justify-content-between align-items-center mb-3 gap-2">
                             <div class="d-flex gap-2 align-items-center">
-                                <div class="search-box position-relative">
-                                    <input type="text" class="form-control ps-5" placeholder="بحث..." aria-label="بحث" />
-                                    <i class="fas fa-search position-absolute" style="left: 15px; top: 50%; transform: translateY(-50%); color: #888;"></i>
-                                </div>
-                                <button class="btn btn-danger">بحث</button>
+                             
                             </div>
                             
                             <div class="d-flex gap-2">
