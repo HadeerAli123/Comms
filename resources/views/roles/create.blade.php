@@ -9,7 +9,6 @@
 
         <div class="row">
             <div class="col-xl-12">
-                <!-- داخل #content -->
                 <div class="card p-4 border-0">
                     <div class="commission-section">
                         <div class="page-title mb-4">
@@ -20,13 +19,11 @@
                             @csrf
                             @if(isset($role)) @method('PUT') @endif
 
-                            <!-- الاسم -->
                             <div class="mb-3">
                                 <label for="groupName" class="form-label fw-bold">الاسم</label>
                                 <input type="text" id="groupName" name="name" value="{{ $role->name ?? '' }}" class="form-control" placeholder="أدخل اسم المجموعة" required>
                             </div>
 
-                            <!-- الصلاحيات -->
                             <h5 class="fw-bold mb-3">الصلاحيات</h5>
                             <div class="row g-5">
                                 @php
@@ -57,7 +54,6 @@
                                 </div>
                             @endif
 
-                            <!-- الأزرار -->
                             <div class="mt-4 gap-4">
                                 <button type="submit" class="btn btn-danger">حفظ</button>
                                 <a href="{{ route('roles.index') }}" class="btn btn-secondary">إلغاء</a>

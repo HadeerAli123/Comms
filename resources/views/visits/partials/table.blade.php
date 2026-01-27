@@ -11,12 +11,10 @@
 
 <div class="card p-4 border-0">
     <div class="commission-section">
-        <!-- العنوان -->
         <div class="page-title mb-4">
             <h2>زيارات المشاهير</h2>
         </div>
 
-        <!-- أدوات البحث -->
         <div class="d-flex flex-wrap justify-content-between align-items-center mb-4 gap-3">
             <form  class="d-flex gap-2" method="GET" action="{{ route('visits.index') }}">
                 <div class="search-box position-relative" style="min-width: 280px;">
@@ -401,7 +399,6 @@
                 </div>
             </div>
 
-            <!-- التبويبات الأخرى حالياً فارغة (يمكن تطويرها لاحقاً) -->
             <div class="tab-pane fade" id="announced" role="tabpanel">
                 <div class="text-center py-5 text-muted">جاري عرض الزيارات التي تم الإعلان عنها...</div>
             </div>

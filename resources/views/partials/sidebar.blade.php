@@ -59,7 +59,6 @@
     </li>
   </ul>
 </nav>
-<!-- الـ Header زي ما هو -->
 <header class="app-header sticky" id="header">
   <div class="main-header-container container-fluid d-flex justify-content-between align-items-center">
     <button class="btn btn-primary d-md-none" id="toggleSidebar">

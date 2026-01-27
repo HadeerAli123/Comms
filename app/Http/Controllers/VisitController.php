@@ -8,18 +8,19 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Validation\ValidatesRequests;
-class VisitController extends BaseController
 
+class VisitController extends BaseController
 {
     use AuthorizesRequests, ValidatesRequests;
-public function __construct()
-    {
-       $this->middleware('permission:visits.view')->only('index');
 
-        // إعلان/رفض زيارة (تعديل حالة)
-        // يسمح لأيٍّ من الصلاحيتين (اليوم أو الماضي) مبدئيًا، وبنفلتر بدقة داخل الدالة حسب التاريخ
+    public function __construct()
+    {
+        $this->middleware('permission:visits.view')->only('index');
+
+        // Allow either permission initially, but filter precisely by date inside the method
         $this->middleware('permission:visits.edit_today|visits.edit_past')->only('toggleStatus');
     }
+
     public function index()
     {
         $breadcrumbs = [
@@ -32,25 +33,22 @@ public function __construct()
         $visits_pending = Visit::with(['influencer', 'user'])->where('is_announced', false)->latest()->get();
         $visits_not_specified = Visit::with(['influencer', 'user'])->where('is_announced',0)->latest()->get();
         return view('visits.index', compact('breadcrumbs', 'visits_all', 'visits_done', 'visits_pending','visits_not_specified'));
-
-
     }
 
     public function toggleStatus(Request $request, Visit $visit)
     {
         $user = $request->user();
 
-if ($visit->created_at->isToday()) {
-    // اليوم: Admin أو Marketing Manager أو Employee مسموح لهم
-    if (! $user->hasAnyRole(['Admin', 'Marketing Manager', 'Employee'])) {
-        abort(403, 'ليس لديك صلاحية تعديل زيارات اليوم.');
-    }
-} else {
-    // الماضي: Admin فقط
-    if (! $user->hasRole('Admin')) {
-        abort(403, 'ليس لديك صلاحية تعديل زيارات سابقة.');
-    }
-}
+        // Restrict editing based on visit date and user role
+        if ($visit->created_at->isToday()) {
+            if (! $user->hasAnyRole(['Admin', 'Marketing Manager', 'Employee'])) {
+                abort(403, 'ليس لديك صلاحية تعديل زيارات اليوم.');
+            }
+        } else {
+            if (! $user->hasRole('Admin')) {
+                abort(403, 'ليس لديك صلاحية تعديل زيارات سابقة.');
+            }
+        }
 
         $validated = $request->validate([
             'is_announced' => 'required|in:1,2',

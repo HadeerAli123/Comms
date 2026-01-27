@@ -3,12 +3,10 @@
 @section('title', 'زيارات العملاء')
 
 @section('content')
-<!-- Start::app-content -->
 <div class="main-content app-content">
     <div class="container-fluid">
         @include('partials.crumb')
 
-        <!-- Start:: row-1 -->
         <div class="row">
             <div class="col-xl-12">
                 <div class="card border-0 p-4">
@@ -17,10 +15,8 @@
                             <h2>زيارات العملاء</h2>
                         </div>
 
-                        <!-- أدوات البحث والتصفية -->
                         <div class="d-flex flex-wrap justify-content-between align-items-center mb-3 gap-2">
                             <div class="d-flex gap-2 align-items-center flex-wrap">
-                                <!-- صندوق البحث -->
                                 <form method="GET" action="{{ route('commissions.index') }}" class="d-flex gap-2 align-items-center">
                                     <div class="search-box position-relative">
                                         <input type="text" name="search" value="{{ request('search') }}" 
@@ -46,7 +42,6 @@
                             </div>
                         </div>
 
-                        <!-- الجدول -->
                         <div class="table-responsive">
                             <table class="table table-bordered text-center align-middle">
                                 <thead>
@@ -113,7 +108,6 @@
                                         </td>
                                     </tr>
 
-                                    <!-- Modal عرض الصورة -->
                                     @if($commission->attach)
                                     <div class="modal fade" id="imageModal-{{ $commission->id }}" tabindex="-1" aria-hidden="true">
                                         <div class="modal-dialog modal-dialog-centered modal-lg">
@@ -127,7 +121,6 @@
                                     </div>
                                     @endif
 
-                                    <!-- Modal إضافة عمولة -->
                                     <div class="modal fade" id="commissionModal-{{ $commission->id }}" tabindex="-1" aria-hidden="true">
                                         <div class="modal-dialog modal-dialog-centered">
                                             <div class="modal-content">
@@ -187,7 +180,6 @@
                             </table>
                         </div>
 
-                        <!-- Pagination -->
                         <div class="d-flex justify-content-center mt-4">
                             {{ $commissions->onEachSide(1)->links('vendor.pagination.custom') }}
                         </div>
@@ -195,12 +187,9 @@
                 </div>
             </div>
         </div>
-        <!-- End:: row-1 -->
     </div>
 </div>
-<!-- End::app-content -->
 
-<!-- Modal إضافة زيارة جديدة -->
 <div class="modal fade" id="addSiteModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-xl">
         <div class="modal-content">
@@ -211,7 +200,6 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <!-- اختيار نوع الشخص -->
                     <div class="row align-items-center mb-4">
                         <label class="fw-bold mb-2">اختر نوع الشخص:</label>
                         <div class="col-12 d-flex align-items-center gap-4">
@@ -226,26 +214,21 @@
                         </div>
                     </div>
 
-                    <!-- حقل المسوق -->
                     <div id="marketer-input-box" class="mb-3" style="display:none;">
                         <label for="marketer_code" class="form-label fw-bold">الرقم التسويقي للمسوق</label>
                         <input id="marketer_code" name="marketer_code" class="form-control" 
                                placeholder="أدخل الرقم التسويقي للمسوق">
                     </div>
 
-                    <!-- حقل الموظف -->
                     <div id="employee-input-box" class="mb-3" style="display:none;">
                         <label for="employee_code" class="form-label fw-bold">الرقم التسويقي للموظف</label>
                         <input id="employee_code" name="employee_code" class="form-control" 
                                placeholder="أدخل الرقم التسويقي للموظف">
                     </div>
 
-                    <!-- عرض التفاصيل -->
                     <div id="marketer-details" class="mb-3" style="display:none;"></div>
 
-                    <!-- الحقول الإضافية -->
                     <div id="extra-fields" style="display:none;">
-                        <!-- حقول الموظف -->
                         <div class="row" id="employee-fields" style="display:none;">
                             <div class="col-md-4 mb-3">
                                 <label class="form-label fw-bold">عدد الأشخاص</label>
@@ -284,7 +267,6 @@
                             </div>
                         </div>
 
-                        <!-- حقول المسوق -->
                         <div class="row" id="marketer-fields">
                             <div class="col-md-6 mb-3">
                                 <label class="form-label fw-bold">عدد الأشخاص</label>
@@ -308,7 +290,6 @@
                             </div>
                         </div>
 
-                        <!-- منطقة الكاميرا -->
                         <div class="col-12 mt-2" id="camera-area" style="display:none;">
                             <video id="camera-preview" autoplay playsinline muted 
                                    style="width:100%; max-height:320px; border-radius:12px; background:#000"></video>
@@ -350,6 +331,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const marketerFields = document.getElementById('marketer-fields');
     const employeeFields = document.getElementById('employee-fields');
 
+    // Only show extra fields after marketer/employee is found (to prevent submitting incomplete/invalid data)
     function showMarketer() {
         marketerBox.style.display = 'block';
         employeeBox.style.display = 'none';
@@ -376,7 +358,6 @@ document.addEventListener('DOMContentLoaded', function() {
         if (this.checked) showEmployee();
     });
 
-    // البحث عن المسوق
     marketerInput.addEventListener('input', function() {
         if (!marketerRadio.checked) return;
         const code = this.value.trim();
@@ -405,7 +386,7 @@ document.addEventListener('DOMContentLoaded', function() {
             });
     });
 
-    // كود الكاميرا
+    // Camera integration allows direct photo capture for verification and fraud prevention
     const openBtn = document.getElementById('open-camera');
     const closeBtn = document.getElementById('close-camera');
     const snapBtn = document.getElementById('snap');

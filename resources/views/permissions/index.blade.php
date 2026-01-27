@@ -9,14 +9,12 @@
 
         <div class="row">
             <div class="col-xl-12">
-                <!-- داخل #content -->
                 <div class="card p-4 border-0">
                     <div class="commission-section">
                         <div class="page-title mb-4">
                             <h2>الصلاحيات</h2>
                         </div>
-                        
-                        <!-- أدوات البحث و التصدير -->
+
                         <div class="d-flex flex-wrap justify-content-between align-items-center mb-3 gap-2">
                             <div class="d-flex gap-2 align-items-center">
                                 <form method="GET" action="{{ route('permissions.index') }}" class="d-flex gap-2" id="permission-search-form">
@@ -27,7 +25,7 @@
                                     <button type="submit" class="btn btn-danger">بحث</button>
                                 </form>
                             </div>
-                            
+
                             <div class="d-flex gap-2">
                                 <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#addPermissionModal">
                                     + إضافة صلاحية
@@ -79,7 +77,7 @@
                                                 </form>
                                             </td>
 
-                                            <!-- Modal للتعديل -->
+                                            <!-- Modal  -->
                                             <div class="modal fade" id="editPermissionModal-{{ $permission->id }}" tabindex="-1" aria-labelledby="editPermissionModalLabel-{{ $permission->id }}" aria-hidden="true">
                                                 <div class="modal-dialog modal-dialog-centered">
                                                     <div class="modal-content">
@@ -129,7 +127,7 @@
     </div>
 </div>
 
-<!-- Modal للإضافة -->
+<!-- Modal  -->
 <div class="modal fade" id="addPermissionModal" tabindex="-1" aria-labelledby="addPermissionModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">

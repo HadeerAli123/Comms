@@ -15,20 +15,17 @@
     display: inline-block;
 }
 
-/* تصميم الكارد الرئيسي */
 .card {
     border: 0;
     box-shadow: 0 0 10px rgba(0,0,0,0.1);
 }
 
-/* عنوان الصفحة */
 .page-title h2 {
     font-size: 1.75rem;
     font-weight: 600;
     color: #333;
 }
 
-/* صندوق البحث */
 .search-box {
     position: relative;
 }
@@ -45,7 +42,6 @@
     color: #888;
 }
 
-/* الأزرار */
 .btn-danger {
     background-color: #dc3545;
     border-color: #dc3545;
@@ -56,7 +52,6 @@
     border-color: #bd2130;
 }
 
-/* الجدول */
 .table-danger {
     background-color: #dc3545;
     color: white;
@@ -75,7 +70,6 @@
     background-color: #f8f9fa;
 }
 
-/* الروابط */
 .text-primary {
     color: #007bff !important;
 }
@@ -84,7 +78,6 @@
     text-decoration: underline;
 }
 
-/* أزرار العمليات */
 .btn-success {
     background-color: #28a745;
     border-color: #28a745;
@@ -100,7 +93,6 @@
     font-size: 0.875rem;
 }
 
-/* المودال */
 .modal-content {
     border-radius: 0.5rem;
 }
@@ -136,7 +128,6 @@
     box-shadow: 0 0 0 0.2rem rgba(0,123,255,.25);
 }
 
-/* الزر الثانوي */
 .btn-secondary {
     background-color: #6c757d;
     border-color: #6c757d;
@@ -149,23 +140,18 @@
 </style>
 
 @section('content')
-<!-- Start::app-content -->
 <div class="main-content app-content">
     <div class="container-fluid">
 
         @include('partials.crumb')
 
-        <!-- Card Container -->
         <div class="card p-4 border-0">
             <div class="commission-section">
-                <!-- Page Title -->
                 <div class="page-title mb-4">
                     <h2>مواقع التسويق</h2>
                 </div>
 
-                <!-- Search & Actions -->
                 <div class="d-flex flex-wrap justify-content-between align-items-center mb-3 gap-2">
-                    <!-- Search Box -->
                     <div class="d-flex gap-2 align-items-center">
                         <div class="search-box position-relative">
                             <input type="text" class="form-control ps-5" placeholder="بحث..." aria-label="بحث" />
@@ -175,7 +161,6 @@
                         <button class="btn btn-danger">بحث</button>
                     </div>
 
-                    <!-- Add Button -->
                     <div class="d-flex gap-2">
                         @can('sites.create')
                             <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#addSiteModal">
@@ -185,7 +170,6 @@
                     </div>
                 </div>
 
-                <!-- Table -->
                 <div class="table-responsive">
                     <table class="table table-bordered text-center align-middle">
                         <thead>
@@ -245,7 +229,6 @@
                                     @endcanany
                                 </tr>
 
-                                <!-- Edit Site Modal -->
                                 @can('sites.edit')
                                     <div class="modal fade" id="editSiteModal-{{ $sub->id }}" tabindex="-1"
                                         aria-labelledby="editSiteModalLabel-{{ $sub->id }}" aria-hidden="true">
@@ -286,7 +269,6 @@
             </div>
         </div>
 
-        <!-- Add Site Modal -->
         @can('sites.create')
             <div class="modal fade" id="addSiteModal" tabindex="-1" aria-labelledby="addSiteModalLabel"
                 aria-hidden="true">
@@ -318,10 +300,6 @@
             </div>
         @endcan
 
-     
-
     </div>
 </div>
-<!-- End::app-content -->
-
 @endsection

@@ -3,13 +3,11 @@
 @section('title', 'مشاهير الاعلانات')
 
 @section('content')
-    <!-- Start::app-content -->
     <div class="main-content app-content">
         <div class="container-fluid">
 
             @include('partials.crumb')
 
-            <!-- Start:: row-1 -->
             <div class="row">
                 <div class="col-xl-12">
                     <div class="card border-0 p-4">
@@ -18,7 +16,6 @@
                                 <h2>مشاهير الاعلانات</h2>
                             </div>
 
-                            <!-- أدوات البحث و التصدير -->
                             <div class="d-flex flex-wrap justify-content-between align-items-center mb-3 gap-2">
                                 <div class="d-flex gap-2 align-items-center">
                                     <form method="GET" action="{{ route('influencers.index') }}" class="d-flex gap-2" id="marketer-search-form">
@@ -38,12 +35,12 @@
                                         <button type="submit" class="btn btn-danger">بحث</button>
                                     </form>
                                 </div>
-                                
+
                                 <div class="d-flex gap-2">
                                     @role('Admin')
                                     <a class="btn btn-outline-danger" href="{{ route('countries.index') }}">الدول</a>
                                     @endrole
-                                    
+
                                     @can('influencers.create')
                                     <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#addMarketerModal">
                                         + إضافة مشهور جديد
@@ -53,6 +50,7 @@
                             </div>
 
                             <script>
+                                // Debounce search to avoid excessive requests
                                 document.addEventListener('DOMContentLoaded', function () {
                                     let timer;
                                     const input = document.getElementById('marketer-search-input');
@@ -68,7 +66,6 @@
                                 });
                             </script>
 
-                            <!-- الجدول -->
                             <div class="table-responsive">
                                 <table class="table table-bordered text-center align-middle">
                                     <thead>
@@ -206,7 +203,6 @@
                                             @endcanany
                                         </tr>
 
-                                        <!-- زيارة جديدة Modal -->
                                         @can('influencers.add_visit')
                                         <div class="modal fade" id="visitModal-{{ $influencer->id }}" tabindex="-1" aria-hidden="true">
                                             <div class="modal-dialog modal-dialog-centered">
@@ -240,7 +236,6 @@
                                         </div>
                                         @endcan
 
-                                        <!-- شحن رصيد Modal -->
                                         @can('influencers.recharge_balance')
                                         <div class="modal fade" id="chargeModal-{{ $influencer->id }}" tabindex="-1" aria-hidden="true">
                                             <div class="modal-dialog modal-dialog-centered">
@@ -264,7 +259,6 @@
                                         </div>
                                         @endcan
 
-                                        <!-- Edit Influencer Modal -->
                                         @can('influencers.edit')
                                         <div class="modal fade" id="editInfluencerModal-{{ $influencer->id }}" tabindex="-1" aria-hidden="true">
                                             <div class="modal-dialog modal-dialog-centered">
@@ -361,7 +355,7 @@
                                         @endforeach
                                     </tbody>
                                 </table>
-                                
+
                                 <div class="d-flex justify-content-center mt-4">
                                     {{ $influencers->onEachSide(1)->links('vendor.pagination.custom') }}
                                 </div>
@@ -370,15 +364,9 @@
                     </div>
                 </div>
             </div>
-            <!-- End:: row-1 -->
-
-          
-
         </div>
     </div>
-    <!-- End::app-content -->
 
-    <!-- Start:: Add Influencer Modal -->
     @can('influencers.create')
     <div class="modal fade" id="addMarketerModal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
@@ -464,6 +452,4 @@
         </div>
     </div>
     @endcan
-    <!-- End:: Add Influencer Modal -->
-
 @endsection

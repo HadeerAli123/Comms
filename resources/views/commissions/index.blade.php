@@ -16,20 +16,16 @@
       <div class="card p-4 border-0">
     <div class="commission-section">
 
-        <!-- العنوان -->
         <div class="page-title mb-4">
             <h2>العمولات</h2>
         </div>
 
-        <!-- أدوات البحث والتصدير -->
         <div class="d-flex flex-wrap justify-content-between align-items-center mb-3 gap-2">
 
-            <!-- البحث + التاريخ -->
             <form method="GET"
                   action="{{ route('commissions.index') }}"
                   class="d-flex gap-4 align-items-center ">
 
-                <!-- البحث -->
                 <div class="search-box position-relative">
                     <input type="text"
                            name="search"
@@ -41,20 +37,17 @@
                        style="left:15px;top:50%;transform:translateY(-50%);color:#888;"></i>
                 </div>
 
-                <!-- التاريخ -->
                 <input type="date"
                        name="created_at"
                        class="form-control"
                        style="max-width:200px;"
                        value="{{ request('created_at') }}">
 
-                <!-- زر البحث -->
                 <button type="submit" class="btn btn-danger">
                     بحث
                 </button>
             </form>
 
-            <!-- التصدير -->
             @php
                 $q = request()->all();
             @endphp
@@ -90,8 +83,7 @@
 
                             <div class="card-body">
 
-             <!-- Tabs الرئيسية -->
-<ul class="nav nav-pills mb-3 commission-tabs" id="mainTabs" role="tablist">
+             <ul class="nav nav-pills mb-3 commission-tabs" id="mainTabs" role="tablist">
 
     <li class="nav-item" role="presentation">
         <button class="nav-link active"
@@ -137,7 +129,6 @@
 
                                 <div class="tab-content" id="mainTabsContent">
 
-                                    <!-- Tab الكل -->
                                     <div class="tab-pane fade show active" id="allTab" role="tabpanel">
                                         @include('commissions.partials.subtabs', [
                                             'type' => 'all',
@@ -145,7 +136,6 @@
                                         ])
                                     </div>
 
-                                    <!-- Tab المسوقين -->
                                     <div class="tab-pane fade" id="marketersTab" role="tabpanel">
                                         @include('commissions.partials.subtabs', [
                                             'type' => 'marketer',
@@ -153,7 +143,6 @@
                                         ])
                                     </div>
 
-                                    <!-- Tab الموظفين -->
                                     <div class="tab-pane fade" id="employeesTab" role="tabpanel">
                                         @include('commissions.partials.subtabs', [
                                             'type' => 'employee',
@@ -173,3 +162,4 @@
     @push('scripts')
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     @endpush
+

@@ -32,50 +32,55 @@ class RoleController extends Controller
         $permissions = Permission::all();
         return view('roles.create', compact('permissions', 'breadcrumbs', 'pageTitle'));
     }
-public function store(Request $request)
-{
-    $request->validate(['name' => 'required|unique:roles,name']);
 
-    $roleName = $request->name;
+    public function store(Request $request)
+    {
+        $request->validate(['name' => 'required|unique:roles,name']);
 
-    $isArabic = preg_match('/\p{Arabic}/u', $roleName);
+        $roleName = $request->name;
 
-    $tr = new GoogleTranslate();
+        $isArabic = preg_match('/\p{Arabic}/u', $roleName);
 
-    if ($isArabic) {
-        $tr->setSource('ar')->setTarget('en');
-        $englishName = $tr->translate($roleName);
-        $arabicName  = $roleName;
-    } else {
-        $tr->setSource('en')->setTarget('ar');
-        $englishName = $roleName;
-        $arabicName  = $tr->translate($roleName);
+        $tr = new GoogleTranslate();
+
+        // Ensure both English and Arabic names are available for translation and localization
+        if ($isArabic) {
+            $tr->setSource('ar')->setTarget('en');
+            $englishName = $tr->translate($roleName);
+            $arabicName  = $roleName;
+        } else {
+            $tr->setSource('en')->setTarget('ar');
+            $englishName = $roleName;
+            $arabicName  = $tr->translate($roleName);
+        }
+
+        $role = Role::create(['name' => $englishName]);
+
+        $role->syncPermissions($request->permissions ?? []);
+
+        $this->updateLangFile('roles', $englishName, $arabicName);
+
+        return redirect()
+            ->route('roles.index')
+            ->with('success', "تم إنشاء المجموعة ($arabicName) بنجاح");
     }
 
-    $role = Role::create(['name' => $englishName]);
+    protected function updateLangFile($file, $key, $value)
+    {
+        $path = resource_path("lang/ar/{$file}.php");
 
-    $role->syncPermissions($request->permissions ?? []);
+        // Create the language file if it doesn't exist to avoid file not found errors
+        if (!file_exists($path)) {
+            file_put_contents($path, "<?php\n\nreturn [\n];");
+        }
 
-    $this->updateLangFile('roles', $englishName, $arabicName);
+        $translations = include($path);
+        $translations[$key] = $value;
 
-    return redirect()
-        ->route('roles.index')
-        ->with('success', "تم إنشاء المجموعة ($arabicName) بنجاح");
-}
-protected function updateLangFile($file, $key, $value)
-{
-    $path = resource_path("lang/ar/{$file}.php");
-
-    if (!file_exists($path)) {
-        file_put_contents($path, "<?php\n\nreturn [\n];");
+        $export = var_export($translations, true);
+        file_put_contents($path, "<?php\n\nreturn {$export};");
     }
 
-    $translations = include($path);
-    $translations[$key] = $value;
-
-    $export = var_export($translations, true);
-    file_put_contents($path, "<?php\n\nreturn {$export};");
-}
     public function edit(Role $role)
     {
         $breadcrumbs = [

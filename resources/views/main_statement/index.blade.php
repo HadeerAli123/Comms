@@ -16,11 +16,10 @@
                         <div class="page-title mb-4">
                             <h2>كشف الحساب الرئيسي</h2>
                         </div>
-                        
-                        <!-- أدوات البحث و التصدير -->
+
                         <div class="d-flex flex-wrap justify-content-between align-items-center mb-3 gap-2">
                             <div class="d-flex gap-2 align-items-center">
-                          
+
                             </div>
                             <div class="d-flex gap-2">
                                 @can('main-statement.add-capital')
@@ -62,7 +61,6 @@
                     </div>
 
                     @can('main-statement.add-capital')
-                    <!-- Modal لإضافة رأس مال -->
                     <div class="modal fade" id="addCapitalModal" tabindex="-1" aria-labelledby="addCapitalModalLabel" aria-hidden="true">
                         <div class="modal-dialog modal-dialog-centered">
                             <form method="POST" action="{{ route('main-statement.addCapital') }}"  >
@@ -122,7 +120,6 @@
                 </div>
             </div>
         </div>
-        <!-- End:: row-1 -->
 
     </div>
 </div>

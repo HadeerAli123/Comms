@@ -19,7 +19,6 @@
                 @endcan
             </div>
 
-            <!-- البحث -->
             <div class="d-flex flex-wrap justify-content-between align-items-center mb-4 gap-3">
                 <form class="d-flex gap-2" method="GET" action="{{ route('marketers.index') }}">
                     <div class="search-box position-relative" style="min-width: 280px;">
@@ -45,7 +44,6 @@
                 </form>
             </div>
 
-            <!-- الجدول -->
             <div class="table-responsive">
                 <table class="table table-bordered text-center align-middle">
                     <thead class="table-danger">
@@ -108,16 +106,12 @@
                 </table>
             </div>
 
-            <!-- الترقيم -->
             <div class="d-flex justify-content-center mt-4">
                 {{ $marketers->onEachSide(1)->links('vendor.pagination.custom') }}
             </div>
         </div>
     </div>
 
-    <!-- ============================================== -->
-    <!--           مودال إضافة مسوق جديد             -->
-    <!-- ============================================== -->
     @can('marketers.create')
         <div class="modal fade" id="addMarketerModal" tabindex="-1" aria-labelledby="addMarketerModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-lg modal-dialog-centered">
@@ -221,7 +215,6 @@
 
         <script>
             document.addEventListener('DOMContentLoaded', () => {
-                // علم الدولة
                 const countrySelect = document.getElementById('country-code-select');
                 const flagImg = document.getElementById('selected-flag-img');
 
@@ -232,7 +225,6 @@
                     });
                 }
 
-                // التحقق من رقم الهاتف
                 const phoneInput = document.getElementById('geex-input-phone');
                 const validationMsg = document.getElementById('phone-validation-message');
 
@@ -251,7 +243,7 @@
 
                 function validatePhone() {
                     if (!phoneInput || !validationMsg) return;
-                    
+
                     const code = countrySelect.value;
                     const phone = phoneInput.value.trim();
                     if (!phone) {
@@ -269,7 +261,6 @@
                     countrySelect.addEventListener('change', validatePhone);
                 }
 
-                // تحميل الفروع
                 const siteSelect = document.getElementById('geex-input-location');
                 const branchContainer = document.getElementById('branch-dropdown-container');
                 const branchSelect = document.getElementById('geex-input-branch');
@@ -304,10 +295,6 @@
         </script>
     @endcan
 
-    <!-- ============================================== -->
-    <!--           مودال تعديل (لكل مسوق)            -->
-    <!-- ============================================== -->
-    @foreach($marketers as $marketer)
         @can('marketers.edit')
             <div class="modal fade" id="editMarketerModal{{ $marketer->id }}" tabindex="-1" aria-labelledby="editMarketerModalLabel{{ $marketer->id }}" aria-hidden="true">
                 <div class="modal-dialog modal-lg modal-dialog-centered">
@@ -410,7 +397,6 @@
                 document.addEventListener('DOMContentLoaded', () => {
                     const id = '{{ $marketer->id }}';
 
-                    // علم الدولة - تعديل
                     const countrySelectEdit = document.getElementById(`edit-country-${id}`);
                     const flagImgEdit = document.getElementById(`edit-flag-${id}`);
 
@@ -421,7 +407,6 @@
                         });
                     }
 
-                    // التحقق من رقم الهاتف - تعديل
                     const phoneEdit = document.getElementById(`edit-phone-${id}`);
                     const msgEdit = document.getElementById(`edit-phone-msg-${id}`);
 
@@ -440,7 +425,7 @@
 
                     function validateEditPhone() {
                         if (!phoneEdit || !msgEdit || !countrySelectEdit) return;
-                        
+
                         const code = countrySelectEdit.value;
                         const phone = phoneEdit.value.trim();
                         if (!phone) {
@@ -457,7 +442,6 @@
                         countrySelectEdit.addEventListener('change', validateEditPhone);
                     }
 
-                    // تحميل الفروع - تعديل
                     const siteEdit = document.getElementById(`edit-site-${id}`);
                     const branchContEdit = document.getElementById(`edit-branch-container-${id}`);
                     const branchSelectEdit = document.getElementById(`edit-branch-${id}`);
@@ -484,7 +468,6 @@
                             .catch(() => branchContEdit.style.display = 'none');
                     }
 
-                    // تحميل أولي إذا كان فيه موقع مختار
                     if (siteEdit && siteEdit.value) {
                         loadEditBranches(siteEdit.value);
                     }

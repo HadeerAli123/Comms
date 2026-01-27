@@ -3,13 +3,11 @@
 @section('title', 'الدول')
 
 @section('content')
-<!-- Start::app-content -->
 <div class="main-content app-content">
     <div class="container-fluid">
 
         @include('partials.crumb')
 
-        <!-- Start:: row-1 -->
         <div class="row">
             <div class="col-xl-12">
                 <div class="card p-4 border-0">
@@ -18,10 +16,7 @@
                             <h2>الدول</h2>
                         </div>
 
-                        <!-- أدوات البحث و التصدير -->
                         <div class="d-flex flex-wrap justify-content-between align-items-center mb-3 gap-2">
-                           
-                            
                             @role('Admin')
                             <div class="d-flex gap-2">
                                 <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#addCountryModal">
@@ -31,7 +26,6 @@
                             @endrole
                         </div>
 
-                        <!-- Start:: Add Country Modal -->
                         @role('Admin')
                         <div class="modal fade" id="addCountryModal" tabindex="-1" aria-labelledby="addCountryModalLabel" aria-hidden="true">
                             <div class="modal-dialog modal-dialog-centered">
@@ -56,9 +50,7 @@
                             </div>
                         </div>
                         @endrole
-                        <!-- End:: Add Country Modal -->
 
-                        <!-- Table -->
                         <div class="table-responsive">
                             <table class="table table-bordered text-center align-middle">
                                 <thead>
@@ -98,7 +90,6 @@
                                         @endrole
                                     </tr>
 
-                                    <!-- Edit Country Modal -->
                                     @role('Admin')
                                     <div class="modal fade" id="editCountryModal-{{ $country->id }}" tabindex="-1" aria-labelledby="editCountryModalLabel-{{ $country->id }}" aria-hidden="true">
                                         <div class="modal-dialog modal-dialog-centered">
@@ -130,12 +121,10 @@
                                         </div>
                                     </div>
                                     @endrole
-                                    <!-- End:: Edit Country Modal -->
                                     @endforeach
                                 </tbody>
                             </table>
                             
-                            <!-- Pagination -->
                             <div class="d-flex justify-content-center mt-4">
                                 {{ $countries->onEachSide(1)->links('vendor.pagination.custom') }}
                             </div>
@@ -144,9 +133,7 @@
                 </div>
             </div>
         </div>
-        <!-- End:: row-1 -->
 
     </div>
 </div>
-<!-- End::app-content -->
 @endsection

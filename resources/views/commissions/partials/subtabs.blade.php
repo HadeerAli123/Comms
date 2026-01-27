@@ -1,15 +1,13 @@
 @php
-    // متوقعين المتغيرات: $type ('all' أو 'marketer' أو 'employee'), $subTab ('all'|'delivered'|'pending'), $counts = ['all'=>..,'delivered'=>..,'pending'=>..]
     $makeUrl = function (string $wanted) use ($type) {
-        // نحافظ على بقية البارامترات، ونغير subTab + mainTab
+        // Reset to first page when switching tabs to avoid pagination issues
         return request()->fullUrlWithQuery([
             'mainTab' => $type,
             'subTab'  => $wanted,
-            'page'    => 1, // نرجّع لأولى صفحة عند التبديل
+            'page'    => 1,
         ]);
     };
 @endphp
-<!-- Tabs الفرعية -->
 <ul class="nav nav-pills mb-3 commission-tabs" role="tablist">
 
     <li class="nav-item" role="presentation">
@@ -44,6 +42,4 @@
 
 </ul>
 
-
-{{-- مافيش تبويب محتوى ديناميكي هنا — الجدول تحت بيستخدم $commissions اللي الكنترولر فلترها --}}
 @include('commissions.partials.table', ['commissions' => $commissions])

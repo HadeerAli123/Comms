@@ -1,9 +1,9 @@
 <!-- ================== CORE LIBS ================== -->
 
-<!-- jQuery (مرة واحدة فقط) -->
+<!-- jQuery  -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-<!-- Popper + Bootstrap (نسخة واحدة فقط) -->
+<!-- Popper + Bootstrap  -->
 <script src="{{ asset('assets/libs/@popperjs/core/umd/popper.min.js') }}"></script>
 <script src="{{ asset('assets/libs/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
 
@@ -16,7 +16,7 @@
 <!-- Sticky Header -->
 <script src="{{ asset('assets/js/sticky.js') }}"></script>
 
-<!-- Simplebar (تشغيل آمن) -->
+<!-- Simplebar  -->
 <script src="{{ asset('assets/libs/simplebar/simplebar.min.js') }}"></script>
 <script>
 document.addEventListener('DOMContentLoaded', function () {
@@ -59,7 +59,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 <!-- ================== CUSTOM SCRIPTS ================== -->
 
-<!-- Custom JS (مسموح لأنه بقى محمي) -->
+<!-- Custom JS  -->
 <script src="{{ asset('assets/js/custom.js') }}"></script>
 
 <!-- Theme Switcher -->

@@ -325,8 +325,7 @@
                     </div>
                 </div>
             </div>
-            <!-- End:: row-1 -->
-
+          
             <!-- Add Employee Modal -->
             @can('marketing-employees.create')
             <div class="modal fade" id="addMarketerModal" tabindex="-1" aria-hidden="true">
@@ -473,7 +472,7 @@
             </div>
             @endcan
 
-           
+
         </div>
     </div>
     <!-- End::app-content -->
