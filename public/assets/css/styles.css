@@ -76,7 +76,7 @@ ease;
         margin: 5px 12px;
         border-radius: 12px;
         position: relative;
-        font-weight: 500;
+        font-weight:600;
         overflow: hidden;
       }
 
@@ -682,3 +682,211 @@ tbody, td, tfoot, th, thead, tr {
         padding: 5px;
     }
 }
+
+
+
+/* ================== Breadcrumb Custom Styles ================== */
+
+/* تنسيق عام للـ breadcrumb */
+.breadcrumb {
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(10px);
+    padding: 12px 20px;
+    border-radius: 12px;
+    margin-bottom: 0;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    border: 1px solid rgba(220, 53, 69, 0.1);
+}
+
+/* عناصر الـ breadcrumb */
+.breadcrumb-item {
+    display: flex;
+    align-items: center;
+    font-size: 0.95rem;
+    font-weight: 500;
+}
+
+/* الروابط داخل الـ breadcrumb */
+.breadcrumb-item a {
+    color: #6c757d;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    padding: 4px 8px;
+    border-radius: 6px;
+}
+
+.breadcrumb-item a:hover {
+    color: #dc3545;
+    background: rgba(220, 53, 69, 0.08);
+    transform: translateX(-2px);
+}
+
+/* العنصر النشط (الصفحة الحالية) */
+.breadcrumb-item.active {
+    color: #dc3545;
+    font-weight: 600;
+}
+
+/* الفاصل بين العناصر (السهم) */
+.breadcrumb-item + .breadcrumb-item::before {
+    content: "»";
+    padding: 0 10px;
+    color: #dc3545;
+    font-weight: 700;
+    font-size: 1.1rem;
+}
+
+/* إضافة أيقونة للعنصر الأول (Home) - اختياري */
+.breadcrumb-item:first-child a::before {
+    content: "\f015"; /* Font Awesome home icon */
+    font-family: "Font Awesome 6 Free";
+    font-weight: 900;
+    margin-left: 6px;
+    color: #dc3545;
+}
+
+/* تأثير hover على الفاصل */
+.breadcrumb-item:hover + .breadcrumb-item::before {
+    color: #b80a0a;
+}
+
+/* Responsive للموبايل */
+@media (max-width: 768px) {
+    .breadcrumb {
+        padding: 8px 15px;
+        font-size: 0.85rem;
+    }
+    
+    .breadcrumb-item {
+        font-size: 0.85rem;
+    }
+    
+    .breadcrumb-item + .breadcrumb-item::before {
+        padding: 0 6px;
+        font-size: 1rem;
+    }
+    
+    /* إخفاء الأيقونة في الموبايل */
+    .breadcrumb-item:first-child a::before {
+        display: none;
+    }
+}
+
+@media (max-width: 540px) {
+    .breadcrumb {
+        padding: 6px 12px;
+    }
+    
+    .breadcrumb-item {
+        font-size: 0.8rem;
+    }
+    
+    .breadcrumb-item + .breadcrumb-item::before {
+        padding: 0 5px;
+    }
+}
+
+/* تنسيق إضافي للـ breadcrumb داخل dashboard-header */
+.dashboard-header .breadcrumb {
+    background: transparent;
+    padding: 0;
+    margin: 0;
+    box-shadow: none;
+    border: none;
+}
+
+.dashboard-header .breadcrumb-item a {
+    padding: 2px 6px;
+}
+
+/* أنماط متقدمة - Optional */
+
+/* Breadcrumb مع خلفية ملونة */
+.breadcrumb.breadcrumb-colored {
+    background: linear-gradient(135deg, rgba(220, 53, 69, 0.05) 0%, rgba(220, 53, 69, 0.02) 100%);
+    border: 1px solid rgba(220, 53, 69, 0.15);
+}
+
+/* Breadcrumb مع ظل */
+.breadcrumb.breadcrumb-shadow {
+    box-shadow: 0 4px 12px rgba(220, 53, 69, 0.1);
+}
+
+/* Breadcrumb مع حدود */
+.breadcrumb.breadcrumb-bordered {
+    border: 2px solid rgba(220, 53, 69, 0.2);
+}
+
+/* Animation عند التحميل */
+@keyframes breadcrumbFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.breadcrumb {
+    animation: breadcrumbFadeIn 0.4s ease;
+}
+
+/* تأثيرات إضافية للروابط */
+.breadcrumb-item a {
+    position: relative;
+    overflow: hidden;
+}
+
+.breadcrumb-item a::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 0;
+    height: 2px;
+    background: #dc3545;
+    transition: width 0.3s ease;
+}
+
+.breadcrumb-item a:hover::after {
+    width: 100%;
+    right: auto;
+    left: 0;
+}
+
+/* Breadcrumb مع أيقونات مخصصة */
+.breadcrumb-item.with-icon a::before {
+    font-family: "Font Awesome 6 Free";
+    font-weight: 900;
+    margin-left: 8px;
+    color: #dc3545;
+    transition: transform 0.3s ease;
+}
+
+.breadcrumb-item.with-icon a:hover::before {
+    transform: scale(1.2);
+}
+
+/* أمثلة لأيقونات مختلفة */
+.breadcrumb-item.icon-dashboard a::before {
+    content: "\f3fd"; /* tachometer */
+}
+
+.breadcrumb-item.icon-users a::before {
+    content: "\f0c0"; /* users */
+}
+
+.breadcrumb-item.icon-settings a::before {
+    content: "\f013"; /* cog */
+}
+
+.breadcrumb-item.icon-profile a::before {
+    content: "\f007"; /* user */
+}
+
+.breadcrumb-item.icon-reports a::before {
+    content: "\f15c"; /* file */
+}
+

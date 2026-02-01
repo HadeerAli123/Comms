@@ -59,8 +59,9 @@
         </div>
         </div>
         <div class="modal-footer">
+                 <button type="submit" class="btn btn-primary">حفظ</button>
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إلغاء</button>
-          <button type="submit" class="btn btn-primary">حفظ</button>
+     
         </div>
       </form>
     </div>

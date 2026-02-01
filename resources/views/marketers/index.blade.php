@@ -211,8 +211,9 @@
                         </div>
 
                         <div class="modal-footer">
+                                                        <button type="submit" class="btn btn-danger px-4">إضافة المسوق</button>
+
                             <button type="button" class="btn btn-secondary px-4" data-bs-dismiss="modal">إلغاء</button>
-                            <button type="submit" class="btn btn-danger px-4">إضافة المسوق</button>
                         </div>
                     </form>
                 </div>
@@ -398,8 +399,9 @@
                             </div>
 
                             <div class="modal-footer">
+                                                                <button type="submit" class="btn btn-danger px-4">حفظ التعديلات</button>
+
                                 <button type="button" class="btn btn-secondary px-4" data-bs-dismiss="modal">إلغاء</button>
-                                <button type="submit" class="btn btn-danger px-4">حفظ التعديلات</button>
                             </div>
                         </form>
                     </div>

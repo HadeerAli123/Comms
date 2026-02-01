@@ -20,8 +20,8 @@
 
                         <!-- أدوات البحث و التصدير -->
                         <div class="d-flex flex-wrap justify-content-between align-items-center mb-3 gap-2">
-                           
-                            
+
+
                             @role('Admin')
                             <div class="d-flex gap-2">
                                 <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#addCountryModal">
@@ -48,8 +48,9 @@
                                             </div>
                                         </div>
                                         <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إلغاء</button>
                                             <button type="submit" class="btn btn-danger">حفظ</button>
+
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إلغاء</button>
                                         </div>
                                     </form>
                                 </div>
@@ -75,22 +76,22 @@
                                     <tr>
                                         <td class="fw-bold text-muted">{{ $loop->iteration }}</td>
                                         <td>{{ $country->name }}</td>
-                                        
+
                                         @role('Admin')
                                         <td>
-                                            <button class="btn btn-sm btn-success me-1" 
-                                                    data-bs-toggle="modal" 
-                                                    data-bs-target="#editCountryModal-{{ $country->id }}" 
-                                                    title="تعديل">
+                                            <button class="btn btn-sm btn-success me-1"
+                                                data-bs-toggle="modal"
+                                                data-bs-target="#editCountryModal-{{ $country->id }}"
+                                                title="تعديل">
                                                 <i class="fas fa-edit"></i>
                                             </button>
-                                            
+
                                             <form action="{{ route('countries.destroy', $country) }}" method="POST" class="d-inline">
-                                                @csrf 
+                                                @csrf
                                                 @method('DELETE')
-                                                <button onclick="return confirm('هل تريد الحذف؟')" 
-                                                        class="btn btn-sm btn-danger" 
-                                                        title="حذف">
+                                                <button onclick="return confirm('هل تريد الحذف؟')"
+                                                    class="btn btn-sm btn-danger"
+                                                    title="حذف">
                                                     <i class="fas fa-trash"></i>
                                                 </button>
                                             </form>
@@ -112,18 +113,19 @@
                                                     <div class="modal-body">
                                                         <div class="mb-3">
                                                             <label for="edit-country-name-{{ $country->id }}" class="form-label fw-bold">اسم الدولة</label>
-                                                            <input id="edit-country-name-{{ $country->id }}" 
-                                                                   type="text" 
-                                                                   name="name" 
-                                                                   value="{{ $country->name }}" 
-                                                                   placeholder="أدخل اسم الدولة" 
-                                                                   class="form-control" 
-                                                                   required>
+                                                            <input id="edit-country-name-{{ $country->id }}"
+                                                                type="text"
+                                                                name="name"
+                                                                value="{{ $country->name }}"
+                                                                placeholder="أدخل اسم الدولة"
+                                                                class="form-control"
+                                                                required>
                                                         </div>
                                                     </div>
                                                     <div class="modal-footer">
-                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إلغاء</button>
                                                         <button type="submit" class="btn btn-danger">حفظ</button>
+
+                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إلغاء</button>
                                                     </div>
                                                 </form>
                                             </div>
@@ -134,7 +136,7 @@
                                     @endforeach
                                 </tbody>
                             </table>
-                            
+
                             <!-- Pagination -->
                             <div class="d-flex justify-content-center mt-4">
                                 {{ $countries->onEachSide(1)->links('vendor.pagination.custom') }}

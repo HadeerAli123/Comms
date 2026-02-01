@@ -65,13 +65,7 @@
 
 <style>
 /* Custom Pagination Styles */
-.pagination-container {
-    background: #ffffff;
-    padding: 20px 30px;
-    border-radius: 20px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
-    display: inline-block;
-}
+
 
 .custom-pagination {
     display: flex;
@@ -113,10 +107,10 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 50px;
-    height: 50px;
+    width: 35px;
+    height:35px;
     border-radius: 18px;
-    font-size: 32px;
+    font-size: 25px;
     font-weight: 600;
     color: #ffffff;
     background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);

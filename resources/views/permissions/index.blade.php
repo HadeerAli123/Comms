@@ -15,7 +15,7 @@
                         <div class="page-title mb-4">
                             <h2>الصلاحيات</h2>
                         </div>
-                        
+
                         <!-- أدوات البحث و التصدير -->
                         <div class="d-flex flex-wrap justify-content-between align-items-center mb-3 gap-2">
                             <div class="d-flex gap-2 align-items-center">
@@ -27,7 +27,7 @@
                                     <button type="submit" class="btn btn-danger">بحث</button>
                                 </form>
                             </div>
-                            
+
                             <div class="d-flex gap-2">
                                 <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#addPermissionModal">
                                     + إضافة صلاحية
@@ -36,14 +36,14 @@
                         </div>
 
                         <script>
-                            document.addEventListener('DOMContentLoaded', function () {
+                            document.addEventListener('DOMContentLoaded', function() {
                                 let timer;
                                 const input = document.getElementById('permission-search-input');
                                 const form = document.getElementById('permission-search-form');
                                 if (input && form) {
-                                    input.addEventListener('input', function () {
+                                    input.addEventListener('input', function() {
                                         clearTimeout(timer);
-                                        timer = setTimeout(function () {
+                                        timer = setTimeout(function() {
                                             form.submit();
                                         }, 500);
                                     });
@@ -62,59 +62,60 @@
                                 </thead>
                                 <tbody>
                                     @foreach($permissions as $permission)
-                                        <tr>
-                                            <td class="fw-bold text-muted">{{ $loop->iteration }}</td>
-                                            <td>
-                                                {{ __("permissions." . $permission->name) !== "permissions." . $permission->name ? __("permissions." . $permission->name) : $permission->name }}
-                                            </td>
-                                            <td>
-                                                <button class="btn btn-sm btn-success me-1" data-bs-toggle="modal" data-bs-target="#editPermissionModal-{{ $permission->id }}" title="تعديل">
-                                                    <i class="fas fa-edit"></i>
+                                    <tr>
+                                        <td class="fw-bold text-muted">{{ $loop->iteration }}</td>
+                                        <td>
+                                            {{ __("permissions." . $permission->name) !== "permissions." . $permission->name ? __("permissions." . $permission->name) : $permission->name }}
+                                        </td>
+                                        <td>
+                                            <button class="btn btn-sm btn-success me-1" data-bs-toggle="modal" data-bs-target="#editPermissionModal-{{ $permission->id }}" title="تعديل">
+                                                <i class="fas fa-edit"></i>
+                                            </button>
+                                            <form action="{{ route('permissions.destroy', $permission) }}" method="POST" class="d-inline">
+                                                @csrf @method('DELETE')
+                                                <button onclick="return confirm('هل تريد الحذف؟')" class="btn btn-sm btn-danger" title="حذف">
+                                                    <i class="fas fa-trash"></i>
                                                 </button>
-                                                <form action="{{ route('permissions.destroy', $permission) }}" method="POST" class="d-inline">
-                                                    @csrf @method('DELETE')
-                                                    <button onclick="return confirm('هل تريد الحذف؟')" class="btn btn-sm btn-danger" title="حذف">
-                                                        <i class="fas fa-trash"></i>
-                                                    </button>
-                                                </form>
-                                            </td>
+                                            </form>
+                                        </td>
 
-                                            <!-- Modal للتعديل -->
-                                            <div class="modal fade" id="editPermissionModal-{{ $permission->id }}" tabindex="-1" aria-labelledby="editPermissionModalLabel-{{ $permission->id }}" aria-hidden="true">
-                                                <div class="modal-dialog modal-dialog-centered">
-                                                    <div class="modal-content">
-                                                        <form action="{{ route('permissions.update', $permission) }}" method="POST">
-                                                            @csrf
-                                                            @method('PUT')
-                                                            <div class="modal-header">
-                                                                <h5 class="modal-title" id="editPermissionModalLabel-{{ $permission->id }}">تعديل الصلاحية</h5>
-                                                            </div>
-                                                            <div class="modal-body">
-                                                                <div class="row">
-                                                                    <div class="col-12">
-                                                                        <label for="edit-permission-name-{{ $permission->id }}" class="form-label fw-bold">الاسم</label>
-                                                                        <input type="text" id="edit-permission-name-{{ $permission->id }}" name="name" value="{{ $permission->name }}" class="form-control" placeholder="ادخل اسم الصلاحية" required>
-                                                                    </div>
+                                        <!-- Modal للتعديل -->
+                                        <div class="modal fade" id="editPermissionModal-{{ $permission->id }}" tabindex="-1" aria-labelledby="editPermissionModalLabel-{{ $permission->id }}" aria-hidden="true">
+                                            <div class="modal-dialog modal-dialog-centered">
+                                                <div class="modal-content">
+                                                    <form action="{{ route('permissions.update', $permission) }}" method="POST">
+                                                        @csrf
+                                                        @method('PUT')
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" id="editPermissionModalLabel-{{ $permission->id }}">تعديل الصلاحية</h5>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <div class="row">
+                                                                <div class="col-12">
+                                                                    <label for="edit-permission-name-{{ $permission->id }}" class="form-label fw-bold">الاسم</label>
+                                                                    <input type="text" id="edit-permission-name-{{ $permission->id }}" name="name" value="{{ $permission->name }}" class="form-control" placeholder="ادخل اسم الصلاحية" required>
                                                                 </div>
-                                                                @if ($errors->any())
-                                                                    <div class="alert alert-danger mt-3">
-                                                                        <ul class="mb-0">
-                                                                            @foreach ($errors->all() as $msg)
-                                                                                <li>{{ $msg }}</li>
-                                                                            @endforeach
-                                                                        </ul>
-                                                                    </div>
-                                                                @endif
                                                             </div>
-                                                            <div class="modal-footer">
-                                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إلغاء</button>
-                                                                <button type="submit" class="btn btn-danger">حفظ</button>
+                                                            @if ($errors->any())
+                                                            <div class="alert alert-danger mt-3">
+                                                                <ul class="mb-0">
+                                                                    @foreach ($errors->all() as $msg)
+                                                                    <li>{{ $msg }}</li>
+                                                                    @endforeach
+                                                                </ul>
                                                             </div>
-                                                        </form>
-                                                    </div>
+                                                            @endif
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="submit" class="btn btn-danger">حفظ</button>
+
+                                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إلغاء</button>
+                                                        </div>
+                                                    </form>
                                                 </div>
                                             </div>
-                                        </tr>
+                                        </div>
+                                    </tr>
                                     @endforeach
                                 </tbody>
                             </table>
@@ -146,18 +147,19 @@
                         </div>
                     </div>
                     @if ($errors->any())
-                        <div class="alert alert-danger mt-3">
-                            <ul class="mb-0">
-                                @foreach ($errors->all() as $msg)
-                                    <li>{{ $msg }}</li>
-                                @endforeach
-                            </ul>
-                        </div>
+                    <div class="alert alert-danger mt-3">
+                        <ul class="mb-0">
+                            @foreach ($errors->all() as $msg)
+                            <li>{{ $msg }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
                     @endif
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إلغاء</button>
                     <button type="submit" class="btn btn-danger">حفظ</button>
+
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إلغاء</button>
                 </div>
             </form>
         </div>

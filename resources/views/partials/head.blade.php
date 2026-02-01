@@ -40,7 +40,6 @@
     <link rel="stylesheet" href="{{ asset('assets/libs/@tarekraafat/autocomplete.js/css/autoComplete.css') }}">
 
     <!-- Google Font -->
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
 
     <!-- Font Awesome -->
     <link
@@ -50,9 +49,7 @@
 
     <!-- ================== CUSTOM CSS ================== -->
     <style>
-        body {
-            font-family: 'Cairo', sans-serif;
-        }
+       
 
         .breadcrumb .breadcrumb-item {
             display: flex;

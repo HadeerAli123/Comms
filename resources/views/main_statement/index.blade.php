@@ -16,11 +16,11 @@
                         <div class="page-title mb-4">
                             <h2>كشف الحساب الرئيسي</h2>
                         </div>
-                        
+
                         <!-- أدوات البحث و التصدير -->
                         <div class="d-flex flex-wrap justify-content-between align-items-center mb-3 gap-2">
                             <div class="d-flex gap-2 align-items-center">
-                          
+
                             </div>
                             <div class="d-flex gap-2">
                                 @can('main-statement.add-capital')
@@ -61,35 +61,38 @@
                         </div>
                     </div>
 
-                    @can('main-statement.add-capital')
+                  @can('main-statement.add-capital')
+
                     <!-- Modal لإضافة رأس مال -->
                     <div class="modal fade" id="addCapitalModal" tabindex="-1" aria-labelledby="addCapitalModalLabel" aria-hidden="true">
-                        <div class="modal-dialog modal-dialog-centered">
-                            <form method="POST" action="{{ route('main-statement.addCapital') }}"  >
+                        <div class="modal-dialog">
+                            <form method="POST" action="{{ route('main-statement.addCapital') }}">
                                 @csrf
                                 <div class="modal-content">
                                     <div class="modal-header">
                                         <h5 class="modal-title" id="addCapitalModalLabel">إضافة رأس مال</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="إغلاق"></button>
                                     </div>
                                     <div class="modal-body">
                                         <div class="mb-3">
-                                            <label for="capitalAmount" class="form-label fw-bold">المبلغ</label>
-                                            <input type="number" step="0.01" min="0" class="form-control" id="capitalAmount" name="amount" placeholder="أدخل المبلغ" required>
+                                            <label for="capitalAmount" class="form-label">المبلغ</label>
+                                            <input type="number" step="0.01" min="0" class="form-control" id="capitalAmount" name="amount" required>
                                         </div>
                                         <div class="mb-3">
-                                            <label for="capitalDescription" class="form-label fw-bold">البيان (اختياري)</label>
+                                            <label for="capitalDescription" class="form-label">البيان (اختياري)</label>
                                             <input type="text" class="form-control" id="capitalDescription" name="description">
                                         </div>
                                     </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إلغاء</button>
-                                        <button type="submit" class="btn btn-danger">حفظ</button>
-                                    </div>
+                                  <div class="modal-footer">
+                    <button type="submit" class="btn btn-danger">حفظ</button>
+
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إلغاء</button>
+                </div>
                                 </div>
                             </form>
                         </div>
                     </div>
-                    @endcan
+@endcan
 
                     <div class="table-responsive">
                         <table class="table table-bordered text-center align-middle">

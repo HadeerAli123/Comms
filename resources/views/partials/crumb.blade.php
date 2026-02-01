@@ -4,7 +4,7 @@
             {{ $pageTitle ?? ((isset($breadcrumbs) && is_array($breadcrumbs) && count($breadcrumbs) > 0) ? ($breadcrumbs[count($breadcrumbs)-1]['label'] ?? '') : '') }}
         </h1>
 @if(isset($breadcrumbs) && is_array($breadcrumbs))
-  <ol class="breadcrumb mb-0 d-flex align-items-center flex-wrap" style="direction: rtl;">
+  <ol class=" mb-0 d-flex align-items-center flex-wrap" style="direction: rtl;">
     @foreach($breadcrumbs as $index => $breadcrumb)
         <li class="breadcrumb-item {{ $loop->last ? 'active' : '' }}" {!! $loop->last ? 'aria-current=page' : '' !!}>
             @if(isset($breadcrumb['url']) && !$loop->last)

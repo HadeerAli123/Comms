@@ -270,9 +270,10 @@
                                                         </div>
                                                     </div>
                                                     <div class="modal-footer">
-                                                        <button type="button" class="btn btn-secondary"
-                                                            data-bs-dismiss="modal">إلغاء</button>
+                                                      
                                                         <button type="submit" class="btn btn-danger">حفظ التعديلات</button>
+                                                          <button type="button" class="btn btn-secondary"
+                                                            data-bs-dismiss="modal">إلغاء</button>
                                                     </div>
                                                 </form>
                                             </div>
@@ -309,9 +310,9 @@
                                 </div>
                             </div>
                             <div class="modal-footer">
+                                                                <button type="submit" class="btn btn-danger">حفظ</button>
+
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إلغاء</button>
-                                <button type="submit" class="btn btn-danger">حفظ</button>
-                            </div>
                         </form>
                     </div>
                 </div>
