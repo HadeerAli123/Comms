@@ -38,36 +38,38 @@ class PermissionController extends Controller
         $name = $request->name;
         $isArabic = preg_match('/\p{Arabic}/u', $name);
 
-    $tr = new GoogleTranslate();
+        $tr = new GoogleTranslate();
 
-    if ($isArabic) {
-        // لو الاسم عربي → نترجم لإنجليزي
-        $tr->setSource('ar')->setTarget('en');
-        $englishName = $tr->translate($name);
-        $arabicName  = $name;
-    } else {
-        // لو الاسم إنجليزي → نترجم لعربي
-        $tr->setSource('en')->setTarget('ar');
-        $arabicName  = $tr->translate($name);
-        $englishName = $name;
-    }
-     $this->updateLangFile('roles', $englishName, $arabicName);
+        // Ensure both Arabic and English translations are available for the permission name
+        if ($isArabic) {
+            $tr->setSource('ar')->setTarget('en');
+            $englishName = $tr->translate($name);
+            $arabicName  = $name;
+        } else {
+            $tr->setSource('en')->setTarget('ar');
+            $arabicName  = $tr->translate($name);
+            $englishName = $name;
+        }
+        $this->updateLangFile('roles', $englishName, $arabicName);
         return redirect()->route('permissions.index')->with('success', 'تم إنشاء الصلاحية ');
     }
-protected function updateLangFile($file, $key, $value)
-{
-    $path = resource_path("lang/ar/{$file}.php");
 
-    if (!file_exists($path)) {
-        file_put_contents($path, "<?php\n\nreturn [\n];");
+    protected function updateLangFile($file, $key, $value)
+    {
+        // Create the language file if it doesn't exist to avoid include errors
+        $path = resource_path("lang/ar/{$file}.php");
+
+        if (!file_exists($path)) {
+            file_put_contents($path, "<?php\n\nreturn [\n];");
+        }
+
+        $translations = include($path);
+        $translations[$key] = $value;
+
+        $export = var_export($translations, true);
+        file_put_contents($path, "<?php\n\nreturn {$export};");
     }
 
-    $translations = include($path);
-    $translations[$key] = $value;
-
-    $export = var_export($translations, true);
-    file_put_contents($path, "<?php\n\nreturn {$export};");
-}
     public function edit(Permission $permission)
     {
         $breadcrumbs = [

@@ -338,85 +338,84 @@
                                 </tbody>
                             </table>
 
-                            <!-- Pagination -->
-                            <div class="d-flex justify-content-center mt-4">
-                                {{ $employees->onEachSide(1)->links('vendor.pagination.custom') }}
+                                <!-- Pagination -->
+                                <div class="d-flex justify-content-center mt-4">
+                                    {{ $employees->onEachSide(1)->links('vendor.pagination.custom') }}
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <!-- End:: row-1 -->
-
-        <!-- Add Employee Modal -->
-        @can('marketing-employees.create')
-        <div class="modal fade" id="addMarketerModal" tabindex="-1" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content">
-                    <form action="{{ route('marketing-employees.store') }}" method="POST">
-                        @csrf
-                        <div class="modal-header">
-                            <h5 class="modal-title">إضافة موظف تسويق جديد</h5>
-                        </div>
-                        <div class="modal-body">
-                            <div class="row">
-                                <div class="col-md-6 mb-2">
-                                    <label class="form-label fw-bold">اسم المستخدم</label>
-                                    <input type="text" name="username" class="form-control" placeholder="اسم المستخدم" required>
-                                </div>
-                                <div class="col-md-6 mb-2">
-                                    <label class="form-label fw-bold">الاسم</label>
-                                    <input type="text" name="name" class="form-control" placeholder="الاسم" required>
-                                </div>
-                                <div class="col-md-12 mb-2">
-                                    <label for="groups" class="form-label fw-bold">المجموعات</label>
-                                    <select name="roles[]" id="groups" class="form-select" multiple required>
-                                        @foreach($roles as $role)
-                                        <option value="{{ $role->name }}">{{ $role->name }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                                <div class="col-md-6 mb-2">
-                                    <label class="form-label fw-bold">كلمة المرور</label>
-                                    <input type="password" name="password" class="form-control" placeholder="كلمة المرور" required>
-                                </div>
-                                <div class="col-md-6 mb-2">
-                                    <label class="form-label fw-bold">تأكيد كلمة المرور</label>
-                                    <input type="password" name="password_confirmation" class="form-control" placeholder="تأكيد كلمة المرور" required>
-                                </div>
-                                <div class="col-md-6 mb-2">
-                                    <label class="form-label fw-bold">البريد الإلكتروني</label>
-                                    <input type="email" name="email" class="form-control" placeholder="البريد الإلكتروني" required>
-                                </div>
-                                <div class="col-md-6 mb-2">
-                                    <label for="geex-input-phone" class="form-label fw-bold">رقم الهاتف</label>
-                                    <div class="input-group">
-                                        <span class="input-group-text p-0" style="min-width: 110px;">
-                                            <img id="selected-flag-img" src="{{ asset('assets/flags/sa.png') }}" alt="flag" style="width: 24px; height: 18px; margin-right: 5px;">
-                                            <select name="country_code" id="country-code-select" class="form-select border-0 bg-transparent px-2" style="width: 80px;" required>
-                                                <option value="+966" selected data-flag-src="{{ asset('assets/flags/sa.png') }}">+966</option>
-                                                <option value="+20" data-flag-src="{{ asset('assets/flags/eg.png') }}">+20</option>
-                                                <option value="+971" data-flag-src="{{ asset('assets/flags/ae.png') }}">+971</option>
-                                                <option value="+965" data-flag-src="{{ asset('assets/flags/kw.png') }}">+965</option>
-                                                <option value="+964" data-flag-src="{{ asset('assets/flags/iq.png') }}">+964</option>
-                                                <option value="+962" data-flag-src="{{ asset('assets/flags/jo.png') }}">+962</option>
-                                                <option value="+963" data-flag-src="{{ asset('assets/flags/sy.png') }}">+963</option>
-                                                <option value="+968" data-flag-src="{{ asset('assets/flags/om.png') }}">+968</option>
-                                                <option value="+973" data-flag-src="{{ asset('assets/flags/bh.png') }}">+973</option>
-                                                <option value="+974" data-flag-src="{{ asset('assets/flags/qa.png') }}">+974</option>
-                                            </select>
-                                        </span>
-                                        <input id="geex-input-phone" type="text" name="phone" placeholder="رقم الهاتف" class="form-control" required>
+          
+            <!-- Add Employee Modal -->
+            @can('marketing-employees.create')
+            <div class="modal fade" id="addMarketerModal" tabindex="-1" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <form action="{{ route('marketing-employees.store') }}" method="POST">
+                            @csrf
+                            <div class="modal-header">
+                                <h5 class="modal-title">إضافة موظف تسويق جديد</h5>
+                            </div>
+                            <div class="modal-body">
+                                <div class="row">
+                                    <div class="col-md-6 mb-2">
+                                        <label class="form-label fw-bold">اسم المستخدم</label>
+                                        <input type="text" name="username" class="form-control" placeholder="اسم المستخدم" required>
                                     </div>
-                                    <span id="phone-validity-msg" class="mt-2 d-block"></span>
-                                </div>
-                                <script>
-                                    document.addEventListener('DOMContentLoaded', function() {
-                                        const select = document.getElementById('country-code-select');
-                                        const flagImg = document.getElementById('selected-flag-img');
-                                        const phoneInput = document.getElementById('geex-input-phone');
-                                        const msgSpan = document.getElementById('phone-validity-msg');
+                                    <div class="col-md-6 mb-2">
+                                        <label class="form-label fw-bold">الاسم</label>
+                                        <input type="text" name="name" class="form-control" placeholder="الاسم" required>
+                                    </div>
+                                    <div class="col-md-12 mb-2">
+                                        <label for="groups" class="form-label fw-bold">المجموعات</label>
+                                        <select name="roles[]" id="groups" class="form-select" multiple required>
+                                            @foreach($roles as $role)
+                                                <option value="{{ $role->name }}">{{ $role->name }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    <div class="col-md-6 mb-2">
+                                        <label class="form-label fw-bold">كلمة المرور</label>
+                                        <input type="password" name="password" class="form-control" placeholder="كلمة المرور" required>
+                                    </div>
+                                    <div class="col-md-6 mb-2">
+                                        <label class="form-label fw-bold">تأكيد كلمة المرور</label>
+                                        <input type="password" name="password_confirmation" class="form-control" placeholder="تأكيد كلمة المرور" required>
+                                    </div>
+                                    <div class="col-md-6 mb-2">
+                                        <label class="form-label fw-bold">البريد الإلكتروني</label>
+                                        <input type="email" name="email" class="form-control" placeholder="البريد الإلكتروني" required>
+                                    </div>
+                                    <div class="col-md-6 mb-2">
+                                        <label for="geex-input-phone" class="form-label fw-bold">رقم الهاتف</label>
+                                        <div class="input-group">
+                                            <span class="input-group-text p-0" style="min-width: 110px;">
+                                                <img id="selected-flag-img" src="{{ asset('assets/flags/sa.png') }}" alt="flag" style="width: 24px; height: 18px; margin-right: 5px;">
+                                                <select name="country_code" id="country-code-select" class="form-select border-0 bg-transparent px-2" style="width: 80px;" required>
+                                                    <option value="+966" selected data-flag-src="{{ asset('assets/flags/sa.png') }}">+966</option>
+                                                    <option value="+20" data-flag-src="{{ asset('assets/flags/eg.png') }}">+20</option>
+                                                    <option value="+971" data-flag-src="{{ asset('assets/flags/ae.png') }}">+971</option>
+                                                    <option value="+965" data-flag-src="{{ asset('assets/flags/kw.png') }}">+965</option>
+                                                    <option value="+964" data-flag-src="{{ asset('assets/flags/iq.png') }}">+964</option>
+                                                    <option value="+962" data-flag-src="{{ asset('assets/flags/jo.png') }}">+962</option>
+                                                    <option value="+963" data-flag-src="{{ asset('assets/flags/sy.png') }}">+963</option>
+                                                    <option value="+968" data-flag-src="{{ asset('assets/flags/om.png') }}">+968</option>
+                                                    <option value="+973" data-flag-src="{{ asset('assets/flags/bh.png') }}">+973</option>
+                                                    <option value="+974" data-flag-src="{{ asset('assets/flags/qa.png') }}">+974</option>
+                                                </select>
+                                            </span>
+                                            <input id="geex-input-phone" type="text" name="phone" placeholder="رقم الهاتف" class="form-control" required>
+                                        </div>
+                                        <span id="phone-validity-msg" class="mt-2 d-block"></span>
+                                    </div>
+                                    <script>
+                                        document.addEventListener('DOMContentLoaded', function () {
+                                            const select = document.getElementById('country-code-select');
+                                            const flagImg = document.getElementById('selected-flag-img');
+                                            const phoneInput = document.getElementById('geex-input-phone');
+                                            const msgSpan = document.getElementById('phone-validity-msg');
 
                                         function updateFlag() {
                                             const selectedOption = select.options[select.selectedIndex];
@@ -517,9 +516,9 @@
         </div>
         @endcan
 
-
+           
+        </div>
     </div>
-</div>
-<!-- End::app-content -->
+    <!-- End::app-content -->
 
 @endsection

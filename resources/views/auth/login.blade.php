@@ -86,9 +86,6 @@
             </div>
         </div>
 
-        <div class="copyright">
-            <p>Copyright © 2025 All rights reserved</p>
-        </div>
     </div>
 
     <!-- Bootstrap JS -->

@@ -43,6 +43,7 @@
    @include('partials.scripts')
 
     <!-- End::app-content -->
+
 </body>
 <script>
     if (!localStorage.getItem("zynixrtl") && !localStorage.getItem("zynixltr")) {

@@ -233,6 +233,7 @@
                                                         <button type="submit" class="btn btn-danger">زيارة</button>
 
                                                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إلغاء</button>
+
                                                     </div>
                                                 </form>
                                             </div>

@@ -59,15 +59,7 @@
     </li>
   </ul>
 </nav>
-<!-- الـ Header زي ما هو -->
-<header class="app-header sticky" id="header">
-  <div class="main-header-container container-fluid d-flex justify-content-between align-items-center">
-    <button class="btn btn-primary d-md-none" id="toggleSidebar">
-      ☰ القائمة
-    </button>
-    @include('partials.profile')
-  </div>
-</header>
+
 
 <script>
 document.addEventListener("DOMContentLoaded", function () {
@@ -78,10 +70,7 @@ document.addEventListener("DOMContentLoaded", function () {
   backdrop.className = "sidebar-backdrop";
   document.body.appendChild(backdrop);
 
-  toggleBtn.addEventListener("click", function () {
-    sidebar.classList.toggle("active");
-    backdrop.classList.toggle("active");
-  });
+ 
 
   backdrop.addEventListener("click", function () {
     sidebar.classList.remove("active");

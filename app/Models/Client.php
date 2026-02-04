@@ -8,13 +8,10 @@ class Client extends Model
 {
     protected $fillable = [
         'name',
-        'site_id',   // FK إلى جدول sites
-        // أي حقول إضافية
+        'site_id',
+        // Add additional fields here if needed
     ];
 
-    /**
-     * علاقة العميل بالموقع الذي ينتمي إليه.
-     */
     public function site()
     {
         return $this->belongsTo(Site::class);

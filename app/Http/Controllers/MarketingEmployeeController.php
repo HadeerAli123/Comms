@@ -105,7 +105,6 @@ public function __construct()
 
 public function store(Request $request)
 {
-    // dd($request->all());
     $data = $request->validate([
         'username' => ['required','string','max:50','unique:users,username'],
         'name'     => ['required','string','max:255'],
@@ -113,7 +112,7 @@ public function store(Request $request)
         'phone'    => ['required', 'string', 'max:20'],
         'password' => ['required','string','min:8','confirmed'],
         'percentage' => ['required', 'numeric', 'min:0', 'max:100'],
-                    'country_code' => ['required', 'string', 'max:6'],
+        'country_code' => ['required', 'string', 'max:6'],
 
     ], [
         'percentage.required' => 'النسبة مطلوبة.',
@@ -136,15 +135,15 @@ public function store(Request $request)
         'password.confirmed'=> 'تأكيد كلمة المرور غير مطابق.',
     ]);
 
-            // Combine country code and phone, remove leading zeros from phone
-        $cleanPhone = ltrim($data['phone'], '0');
-        $fullPhone = $data['country_code'] . $cleanPhone;
-
+    // Ensure phone numbers are stored in a consistent format for external integrations
+    $cleanPhone = ltrim($data['phone'], '0');
+    $fullPhone = $data['country_code'] . $cleanPhone;
 
     $lastUser = User::where('marketing_code', '>=', 1000)
         ->orderByDesc('marketing_code')
         ->first();
 
+    // Guarantee unique marketing_code across both users and marketers
     $marketingCode = $lastUser ? $lastUser->marketing_code + 1 : 1000;
 
     while (
@@ -163,7 +162,7 @@ public function store(Request $request)
         'password'        => bcrypt($data['password']),
         'marketing_code'  => $marketingCode,
     ]);
- $user->syncRoles($request->roles ?? []); // إضافة المجموعات
+ $user->syncRoles($request->roles ?? []);
 
     if (!empty($user->phone)) {
         $fullPhone = $user->phone;
@@ -214,7 +213,7 @@ public function update(Request $request, User $marketing_employee)
         'table_commission.min' => 'مبلغ عمولة الطاولة يجب ألا يقل عن 0.',
     ]);
 
-    // Combine country code and phone, remove leading zeros from phone
+    // Ensure phone numbers are stored in a consistent format for external integrations
     $cleanPhone = ltrim($data['phone'], '0');
     $fullPhone = $data['country_code'] . $cleanPhone;
 

@@ -16,13 +16,12 @@
                         <div class="page-title mb-4">
                             <h2>المجموعات</h2>
                         </div>
-                        
-                        <!-- أدوات البحث و التصدير -->
+
                         <div class="d-flex flex-wrap justify-content-between align-items-center mb-3 gap-2">
                             <div class="d-flex gap-2 align-items-center">
-                             
+
                             </div>
-                            
+
                             <div class="d-flex gap-2">
                                 <a class="btn btn-outline-danger" href="{{ route('roles.create') }}">
                                     <i class="fas fa-plus me-1"></i> إضافة مجموعة

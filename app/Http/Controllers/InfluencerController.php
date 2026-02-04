@@ -16,124 +16,107 @@ use App\Models\InfluencerOperation;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Validation\ValidatesRequests;
+
 class InfluencerController extends BaseController
 {
-       use AuthorizesRequests, ValidatesRequests;
-public function __construct()
-{
-      // CRUD
-    $this->middleware('permission:influencers.view')->only(['index','show']);
-    $this->middleware('permission:influencers.create')->only(['create','store']);
-    $this->middleware('permission:influencers.edit')->only(['edit','update']);
-    $this->middleware('permission:influencers.delete')->only(['destroy']);
+    use AuthorizesRequests, ValidatesRequests;
 
-    // عمليات خاصة
-    $this->middleware('permission:influencers.add_visit')->only(['addVisit']);
-    $this->middleware('permission:influencers.recharge_balance')->only(['chargeBalance']);
-
-}
-
-    /**
-     * Display a listing of the influencers.
-     */
-   public function index(Request $request)
-{
-    $breadcrumbs = [
-        ['label' => 'الرئيسية', 'url' => route('dashboard')],
-        ['label' => 'مشاهير المسوقين', 'url' => route('influencers.index')],
-    ];
-
-  $query = Influencer::with(['employee', 'country', 'latestOperation'])
-    ->withMax('operations', 'created_at')
-    // إجمالي كل الزيارات
-    ->withCount('visits')
-    // إجمالي الزيارات المُعلَنَة فقط (اختياري لو تحب تعرضه)
-    ->withCount(['visits as announced_visits_count' => function ($q) {
-        $q->where('is_announced', true);
-    }])
-    // متوسط تقييم الزيارات المُعلَنَة فقط
-    ->withAvg(['visits as announced_avg_rating' => function ($q) {
-        $q->where('is_announced', true);
-    }], 'rating');
-
-
-    if ($request->filled('search')) {
-        $search = $request->search;
-        $query->where(function ($q) use ($search) {
-            $q->where('name', 'like', "%{$search}%");
-        });
+    public function __construct()
+    {
+        $this->middleware('permission:influencers.view')->only(['index','show']);
+        $this->middleware('permission:influencers.create')->only(['create','store']);
+        $this->middleware('permission:influencers.edit')->only(['edit','update']);
+        $this->middleware('permission:influencers.delete')->only(['destroy']);
+        $this->middleware('permission:influencers.add_visit')->only(['addVisit']);
+        $this->middleware('permission:influencers.recharge_balance')->only(['chargeBalance']);
     }
 
-    if ($request->filled('employee_id')) {
-        $query->where('employee_id', $request->employee_id);
+    public function index(Request $request)
+    {
+        $breadcrumbs = [
+            ['label' => 'الرئيسية', 'url' => route('dashboard')],
+            ['label' => 'مشاهير المسوقين', 'url' => route('influencers.index')],
+        ];
+
+        $query = Influencer::with(['employee', 'country', 'latestOperation'])
+            ->withMax('operations', 'created_at')
+            ->withCount('visits')
+            ->withCount(['visits as announced_visits_count' => function ($q) {
+                $q->where('is_announced', true);
+            }])
+            ->withAvg(['visits as announced_avg_rating' => function ($q) {
+                $q->where('is_announced', true);
+            }], 'rating');
+
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->where(function ($q) use ($search) {
+                $q->where('name', 'like', "%{$search}%");
+            });
+        }
+
+        if ($request->filled('employee_id')) {
+            $query->where('employee_id', $request->employee_id);
+        }
+
+        $query->orderByDesc('operations_max_created_at')
+              ->orderByDesc('id');
+
+        $influencers = $query->paginate(10)->withQueryString();
+
+        $employees = User::pluck('name', 'id');
+        $pageTitle = 'قائمة مشاهير الاعلانات';
+        $countries = Country::all();
+
+        // These queries are separated to allow for tab counts in the UI
+        $visits_all = Visit::query();
+        $visits_done = Visit::where('is_announced', true);
+        $visits_pending = Visit::where('is_announced', false);
+
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $visits_all->whereHas('influencer', function ($q) use ($search) {
+                $q->where('name', 'like', "%{$search}%");
+            });
+            $visits_done->whereHas('influencer', function ($q) use ($search) {
+                $q->where('name', 'like', "%{$search}%");
+            });
+            $visits_pending->whereHas('influencer', function ($q) use ($search) {
+                $q->where('name', 'like', "%{$search}%");
+            });
+        }
+        if ($request->filled('employee_id')) {
+            $employee_id = $request->employee_id;
+            $visits_all->whereHas('influencer', function ($q) use ($employee_id) {
+                $q->where('employee_id', $employee_id);
+            });
+            $visits_done->whereHas('influencer', function ($q) use ($employee_id) {
+                $q->where('employee_id', $employee_id);
+            });
+            $visits_pending->whereHas('influencer', function ($q) use ($employee_id) {
+                $q->where('employee_id', $employee_id);
+            });
+        }
+
+        return view('influencers.index', [
+            'influencers' => $influencers,
+            'breadcrumbs' => $breadcrumbs,
+            'pageTitle' => $pageTitle,
+            'employees' => $employees,
+            'countries' => $countries,
+            'visits_all' => $visits_all->get(),
+            'visits_done' => $visits_done->get(),
+            'visits_pending' => $visits_pending->get(),
+        ]);
     }
 
-    $query->orderByDesc('operations_max_created_at')
-          ->orderByDesc('id');
-
-    $influencers = $query->paginate(10)->withQueryString();
-
-    $employees = User::pluck('name', 'id');
-    $pageTitle = 'قائمة مشاهير الاعلانات';
-    $countries = Country::all();
-
-    // Visits tab counts
-    $visits_all = Visit::query();
-    $visits_done = Visit::where('is_announced', true);
-    $visits_pending = Visit::where('is_announced', false);
-
-    if ($request->filled('search')) {
-        $search = $request->search;
-        $visits_all->whereHas('influencer', function ($q) use ($search) {
-            $q->where('name', 'like', "%{$search}%");
-        });
-        $visits_done->whereHas('influencer', function ($q) use ($search) {
-            $q->where('name', 'like', "%{$search}%");
-        });
-        $visits_pending->whereHas('influencer', function ($q) use ($search) {
-            $q->where('name', 'like', "%{$search}%");
-        });
-    }
-    if ($request->filled('employee_id')) {
-        $employee_id = $request->employee_id;
-        $visits_all->whereHas('influencer', function ($q) use ($employee_id) {
-            $q->where('employee_id', $employee_id);
-        });
-        $visits_done->whereHas('influencer', function ($q) use ($employee_id) {
-            $q->where('employee_id', $employee_id);
-        });
-        $visits_pending->whereHas('influencer', function ($q) use ($employee_id) {
-            $q->where('employee_id', $employee_id);
-        });
-    }
-
-    return view('influencers.index', [
-        'influencers' => $influencers,
-        'breadcrumbs' => $breadcrumbs,
-        'pageTitle' => $pageTitle,
-        'employees' => $employees,
-        'countries' => $countries,
-        'visits_all' => $visits_all->get(),
-        'visits_done' => $visits_done->get(),
-        'visits_pending' => $visits_pending->get(),
-    ]);
-
-}
-
-/**
- * Show the form for creating a new influencer.
- */
-public function create()
+    public function create()
     {
         $sites = Site::whereNull('parent_id')->pluck('name', 'id');
         $employees = User::pluck('name', 'id');
         return view('influencers.create', compact('sites', 'employees'));
     }
 
-
-    /**
-     * Store a newly created influencer.
-     */
     public function store(Request $request)
     {
         $data = $request->validate([
@@ -149,7 +132,7 @@ public function create()
             'snap' => ['nullable', 'string', 'max:255'],
             'snap_link' => ['nullable', 'url', 'max:255'],
             'phone' => ['nullable', 'string', 'max:20'],
-            'pdf' => ['nullable', 'file', 'mimes:pdf', 'max:20480'], // 20MB max
+            'pdf' => ['nullable', 'file', 'mimes:pdf', 'max:20480'],
         ]);
 
         $pdfPath = null;
@@ -202,9 +185,6 @@ public function create()
         }
     }
 
-    /**
-     * Display the specified influencer.
-     */
     public function show(Influencer $influencer)
     {
         $breadcrumbs = [
@@ -215,18 +195,12 @@ public function create()
         return view('influencers.show', compact('influencer', 'breadcrumbs'));
     }
 
-    /**
-     * Show the form for editing the specified influencer.
-     */
     public function edit(Influencer $influencer)
     {
         $sites = Site::whereNull('parent_id')->pluck('name', 'id');
         return view('influencers.edit', compact('influencer', 'sites'));
     }
 
-    /**
-     * Update the specified influencer.
-     */
     public function update(Request $request, Influencer $influencer)
     {
         $data = $request->validate([
@@ -242,10 +216,9 @@ public function create()
             'snap' => ['nullable', 'string', 'max:255'],
             'snap_link' => ['nullable', 'url', 'max:255'],
             'phone' => ['nullable', 'string', 'max:20'],
-            'pdf' => ['nullable', 'file', 'mimes:pdf', 'max:20480'], // 20MB max
+            'pdf' => ['nullable', 'file', 'mimes:pdf', 'max:20480'],
         ]);
 
-        // Handle PDF upload
         if ($request->hasFile('pdf')) {
             $pdfPath = $request->file('pdf')->store('influencers', 'public');
             $data['pdf'] = $pdfPath;
@@ -270,73 +243,71 @@ public function create()
         return redirect()->route('influencers.index')->with('success', 'تم التعديل بنجاح');
     }
 
-
-    /**
-     * Remove the specified influencer.
-     */
     public function destroy(Influencer $influencer)
     {
         $influencer->delete();
         return back()->with('success', 'تم الحذف بنجاح.');
     }
 
-  public function addVisit(Request $request, Influencer $influencer)
-{
-    $this->authorize('influencers.add_visit');
-    $data = $request->validate([
-        'amount'        => 'required|numeric|min:0.01',
-        'notes'         => 'nullable|string|max:1000',
-        'people_count'  => 'nullable|integer|min:0',
-    ]);
-
-    DB::transaction(function () use ($data, $influencer) {
-        $locked = \App\Models\Influencer::whereKey($influencer->id)->lockForUpdate()->first();
-
-        Visit::create([
-            'influencer_id' => $locked->id,
-            'amount'        => $data['amount'],
-            'notes'         => $data['notes'] ?? null,
-            'people_count'  => $data['people_count'] ?? 0,
-            'user_id'       => auth()->id(),
-            'is_announced'  => false,
+    public function addVisit(Request $request, Influencer $influencer)
+    {
+        // Use transaction to avoid race conditions on balance update
+        $this->authorize('influencers.add_visit');
+        $data = $request->validate([
+            'amount'        => 'required|numeric|min:0.01',
+            'notes'         => 'nullable|string|max:1000',
+            'people_count'  => 'nullable|integer|min:0',
         ]);
 
-        InfluencerOperation::create([
-            'influencer_id' => $locked->id,
-            'operation_type'=> 'visit',          // ['recharge','visit']
-            'amount'        => $data['amount'],
-            'notes'         => $data['notes'] ?? null,
-            'employee_id'   => auth()->id(),
+        DB::transaction(function () use ($data, $influencer) {
+            $locked = \App\Models\Influencer::whereKey($influencer->id)->lockForUpdate()->first();
+
+            Visit::create([
+                'influencer_id' => $locked->id,
+                'amount'        => $data['amount'],
+                'notes'         => $data['notes'] ?? null,
+                'people_count'  => $data['people_count'] ?? 0,
+                'user_id'       => auth()->id(),
+                'is_announced'  => false,
+            ]);
+
+            InfluencerOperation::create([
+                'influencer_id' => $locked->id,
+                'operation_type'=> 'visit',
+                'amount'        => $data['amount'],
+                'notes'         => $data['notes'] ?? null,
+                'employee_id'   => auth()->id(),
+            ]);
+
+            $locked->decrement('balance', $data['amount']);
+        });
+
+        return back()->with('success', 'تم إضافة الزيارة وخصم المبلغ بنجاح');
+    }
+
+    public function chargeBalance(Request $request, Influencer $influencer)
+    {
+        // Use transaction to avoid race conditions on balance update
+        $this->authorize('influencers.recharge_balance');
+        $data = $request->validate([
+            'charge_amount' => 'required|numeric|min:0.01',
+            'notes'         => 'nullable|string|max:1000',
         ]);
 
-        $locked->decrement('balance', $data['amount']);
-    });
+        DB::transaction(function () use ($data, $influencer) {
+            $locked = \App\Models\Influencer::whereKey($influencer->id)->lockForUpdate()->first();
 
-    return back()->with('success', 'تم إضافة الزيارة وخصم المبلغ بنجاح');
-}
+            InfluencerOperation::create([
+                'influencer_id' => $locked->id,
+                'operation_type'=> 'recharge',
+                'amount'        => $data['charge_amount'],
+                'notes'         => $data['notes'] ?? null,
+                'employee_id'   => auth()->id(),
+            ]);
 
-public function chargeBalance(Request $request, Influencer $influencer)
-{
-    $this->authorize('influencers.recharge_balance'); 
-    $data = $request->validate([
-        'charge_amount' => 'required|numeric|min:0.01',
-        'notes'         => 'nullable|string|max:1000',
-    ]);
+            $locked->increment('balance', $data['charge_amount']);
+        });
 
-    DB::transaction(function () use ($data, $influencer) {
-        $locked = \App\Models\Influencer::whereKey($influencer->id)->lockForUpdate()->first();
-
-        InfluencerOperation::create([
-            'influencer_id' => $locked->id,
-            'operation_type'=> 'recharge',
-            'amount'        => $data['charge_amount'],
-            'notes'         => $data['notes'] ?? null,
-            'employee_id'   => auth()->id(),
-        ]);
-
-        $locked->increment('balance', $data['charge_amount']);
-    });
-
-    return back()->with('success', 'تم شحن الرصيد بنجاح');
-}
+        return back()->with('success', 'تم شحن الرصيد بنجاح');
+    }
 }

@@ -26,12 +26,12 @@
             <i class="fas fa-user-circle ms-2"></i> {{ auth()->user()->name ?? 'Admin' }}
           </button>
           <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-            <li> 
+            <li>
               <a class="dropdown-item" href="{{ route('profile.edit') }}">
                 <i class="fas fa-user me-2"></i>الملف الشخصي
               </a>
             </li>
-          
+
             <li><hr class="dropdown-divider" /></li>
             <li>
               <form method="POST" action="{{ route('logout') }}" class="d-inline">
@@ -45,7 +45,7 @@
         </div>
       </div>
 
-   
+
   </header>
 
 
@@ -100,18 +100,18 @@
   #sidebar {
     right: -250px;
   }
-  
+
   #sidebar.active {
     right: 0;
   }
 }
 
-/* Desktop - Sidebar دايماً ظاهر */
+/* Desktop - Sidebar   */
 @media (min-width: 769px) {
   #sidebar {
     right: 0;
   }
-  
+
   #content {
     margin-right: 250px;
   }

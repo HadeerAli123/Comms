@@ -1,17 +1,14 @@
 @extends('layout.app')
 
 @section('title', 'تسليم العمولة')
-<!-- Material Icons CDN -->
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
 @section('content')
-    <!-- Start::app-content -->
     <div class="main-content app-content">
         <div class="container-fluid">
 
             @include('partials.crumb')
 
-            <!-- Start:: row-1 -->
             <div class="row">
                 <div class="col-xl-12">
                     <div class="card p-4 border-0">
@@ -23,7 +20,6 @@
                             <form action="{{ route('commissions.deliverStore', $commission->id) }}" method="POST" enctype="multipart/form-data">
                                 @csrf
                                 
-                                <!-- طريقة التسليم -->
                                 <div class="mb-4">
                                     <label class="form-label fw-bold">طريقة التسليم</label>
                                     <div class="d-flex gap-4">
@@ -38,7 +34,6 @@
                                     </div>
                                 </div>
 
-                                <!-- قسم الكود المستلم -->
                                 <div class="mb-4" id="code_section" style="display:none;">
                                     <div class="border-box">
                                         <label class="form-label fw-bold">الكود المستلم</label>
@@ -105,7 +100,6 @@
                                 });
                                 </script>
 
-                                <!-- قسم الرمز التسويقي -->
                                 <div id="promo_section" style="display:none;">
                                     <div class="border-box mb-4">
                                         <div class="row">
@@ -128,7 +122,6 @@
                                             </div>
                                         </div>
 
-                                        <!-- منطقة الكاميرا -->
                                         <div class="col-12 mt-3" id="promo-camera-area" style="display:none;">
                                             <video id="promo-camera-preview" autoplay playsinline muted style="width:100%; max-height:350px; border-radius:12px; background:#000"></video>
                                             <div class="mt-3 d-flex gap-2">
@@ -204,6 +197,7 @@
                                     let stream = null;
                                     let capturedBlob = null;
 
+                                    // Camera access requires HTTPS or localhost for security reasons
                                     function secureOK() {
                                         return location.protocol === 'https:' ||
                                             location.hostname === 'localhost' ||
@@ -424,7 +418,6 @@
                                 });
                                 </script>
 
-                                <!-- المبلغ المُسلّم -->
                                 <div class="mb-4">
                                     <div class="border-box">
                                         <label class="form-label fw-bold">المبلغ المُسلّم</label>
@@ -432,7 +425,6 @@
                                     </div>
                                 </div>
 
-                                <!-- زر التأكيد -->
                                 @can('commissions.deliver')
                                 <button type="submit" class="btn btn-danger btn-lg">
                                     <i class="fas fa-check-circle me-2"></i> تأكيد
@@ -447,10 +439,6 @@
                     </div>
                 </div>
             </div>
-            <!-- End:: row-1 -->
-
         </div>
     </div>
-    <!-- End::app-content -->
-
 @endsection
